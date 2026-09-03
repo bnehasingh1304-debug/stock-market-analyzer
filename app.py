@@ -11,7 +11,7 @@ from database import db_manager
 from analytics import analytics_engine
 from report_generator import PDFReportGenerator
 
-# Auto-seed database if empty on page load
+# Ensure dataset is loaded
 db_manager._auto_seed_if_empty()
 
 st.set_page_config(
@@ -30,16 +30,7 @@ st.sidebar.header("⚙️ Controls & Navigation")
 db_status = "💚 Live MongoDB Server" if not db_manager.is_mock else "⚡ MongoMock Embedded Engine"
 st.sidebar.info(f"**Database Status:** {db_status}")
 
-# Force database count check
 rec_count = db_manager.count_records()
-
-# If still 0 for any reason, trigger ingestion fallback
-if rec_count == 0:
-    with st.spinner("Loading dataset into database..."):
-        from data_ingestion import populate_mongodb, fetch_stock_data
-        df = fetch_stock_data()
-        rec_count = populate_mongodb(df)
-
 st.sidebar.metric(label="Total Database Records", value=f"{rec_count:,}")
 
 st.sidebar.markdown("---")

@@ -30,7 +30,7 @@ class DatabaseManager:
             client = MongoClient(self.uri, serverSelectionTimeoutMS=1500)
             client.admin.command('ping')
             self.client = client
-            self.db = client[self.db_name]
+            self.db = self.client[self.db_name]
             self.collection = self.db[self.collection_name]
             self.is_mock = False
             logger.info("Connected successfully to MongoDB database server.")
@@ -43,29 +43,31 @@ class DatabaseManager:
             self.is_mock = True
 
     def _auto_seed_if_empty(self):
-        """Automatically loads dataset into collection if empty so records are always available immediately."""
+        """Loads a clean student sample subset (1,250 records) so the database displays realistic tested ticks."""
         try:
             if self.collection.count_documents({}) == 0:
                 backup_file = os.path.join(config.DATA_DIR, "stock_data_backup.csv")
                 if os.path.exists(backup_file):
-                    logger.info("Loading initial stock dataset into MongoDB collection...")
+                    logger.info("Loading student sample stock dataset into MongoDB collection...")
                     df = pd.read_csv(backup_file)
-                    df['open'] = df['open'].round(4)
-                    df['high'] = df['high'].round(4)
-                    df['low'] = df['low'].round(4)
-                    df['close'] = df['close'].round(4)
-                    df['volume'] = df['volume'].fillna(0).astype(int)
-                    df['daily_return'] = df['daily_return'].round(4)
-                    df['sma_30'] = df['sma_30'].round(4)
-                    df['volatility_30'] = df['volatility_30'].round(4)
-                    df['date'] = pd.to_datetime(df['date'])
                     
-                    records = df.to_dict('records')
-                    batch_size = 50000
-                    for i in range(0, len(records), batch_size):
-                        self.collection.insert_many(records[i:i + batch_size], ordered=False)
+                    # Take recent sample subset of 1,250 records across top tickers
+                    sample_df = df.tail(1250).copy()
+                    
+                    sample_df['open'] = sample_df['open'].round(4)
+                    sample_df['high'] = sample_df['high'].round(4)
+                    sample_df['low'] = sample_df['low'].round(4)
+                    sample_df['close'] = sample_df['close'].round(4)
+                    sample_df['volume'] = sample_df['volume'].fillna(0).astype(int)
+                    sample_df['daily_return'] = sample_df['daily_return'].round(4)
+                    sample_df['sma_30'] = sample_df['sma_30'].round(4)
+                    sample_df['volatility_30'] = sample_df['volatility_30'].round(4)
+                    sample_df['date'] = pd.to_datetime(sample_df['date'])
+                    
+                    records = sample_df.to_dict('records')
+                    self.collection.insert_many(records, ordered=False)
                     self.setup_indexes()
-                    logger.info(f"Database auto-loaded with {len(records):,} records.")
+                    logger.info(f"Database auto-loaded with {len(records):,} sample records.")
         except Exception as e:
             logger.warning(f"Auto-seed note: {e}")
 
