@@ -8,7 +8,7 @@ echo                STOCK MARKET TICK DATA ANALYZER
 echo ======================================================================
 echo.
 echo  [1] Run Full Pipeline (Fetch Data, Seed MongoDB, Run Queries & PDF)
-echo  [2] Launch Interactive Web Dashboard (Streamlit GUI)
+echo  [2] Launch HTML5 Web Application (http://localhost:5000)
 echo  [3] Open Generated PDF Project Report
 echo  [4] Exit
 echo.
@@ -25,8 +25,9 @@ if "%choice%"=="1" (
 
 if "%choice%"=="2" (
     echo.
-    echo Launching Interactive Dashboard in your default web browser...
-    python -m streamlit run app.py
+    echo Launching HTML5 Web Application in your web browser...
+    start http://localhost:5000
+    python server.py
     pause
     goto MENU
 )

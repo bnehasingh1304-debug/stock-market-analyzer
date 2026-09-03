@@ -15,11 +15,8 @@ Your project is saved at:
 
 1. Open File Explorer and navigate to:
    `C:\Users\bneha\Documents\stock-market-analyzer\`
-2. Double-click **`run_project.bat`**.
-3. Choose an option from the menu:
-   - **Press `1`**: Runs the complete pipeline (fetches data, inserts 100,000+ documents into MongoDB, runs all 5 financial queries, and builds the PDF report).
-   - **Press `2`**: Launches the interactive Streamlit Web Dashboard in your browser (`http://localhost:8501`).
-   - **Press `3`**: Opens the generated PDF Project Report.
+2. Double-click **`Launch_Website.bat`** (or **`run_project.bat`**).
+3. Your web browser will automatically open your HTML5 website at **`http://localhost:5000`**!
 
 ---
 
@@ -36,10 +33,11 @@ cd C:\Users\bneha\Documents\stock-market-analyzer
 python main.py
 ```
 
-### To open the interactive Web Dashboard:
+### To open the HTML5 Web Application:
 ```cmd
-python -m streamlit run app.py
+python server.py
 ```
+Then open your web browser to `http://localhost:5000`.
 
 ---
 
@@ -50,7 +48,7 @@ python -m streamlit run app.py
 3. Select `C:\Users\bneha\Documents\stock-market-analyzer`.
 4. Open the integrated terminal (`Ctrl + ~`) and type:
    - `python main.py` to run the data pipeline.
-   - `python -m streamlit run app.py` to launch the web dashboard.
+   - `python server.py` to launch the HTML5 web server.
 
 ---
 

@@ -6,7 +6,6 @@
 
 ## 🌐 Live Web Deployment & Repository Links
 
-- **Live Web Application**: [https://stock-market-analyzer-bneha.streamlit.app/](https://stock-market-analyzer-bneha.streamlit.app/)
 - **GitHub Repository**: [https://github.com/bnehasingh1304-debug/stock-market-analyzer](https://github.com/bnehasingh1304-debug/stock-market-analyzer)
 
 ---
@@ -21,7 +20,7 @@
   3. **Volatility Ranking Table**: Calculates daily return standard deviation to rank stock risk.
   4. **Stock Return Correlation Matrix**: Analyzes asset co-movement and diversification efficiency.
   5. **Best & Worst Performing Stocks**: Computes total cumulative return percentages.
-- **Interactive Web Dashboard**: Streamlit GUI (`app.py`) for live ticker visualization, Plotly charts, and query execution.
+- **HTML5 Web Dashboard**: Built with HTML5, CSS3, Bootstrap, and Chart.js (`server.py` & `templates/index.html`).
 - **Automated PDF Project Report Generator**: Uses ReportLab to compile a publication-ready PDF report containing schema specs, query tables, visual charts, and investment insights.
 
 ---
@@ -34,14 +33,15 @@ stock-market-analyzer/
 ├── database.py           # MongoDB connection management, schema indexing & mongomock fallback
 ├── data_ingestion.py     # yfinance API harvester and MongoDB bulk insertion engine
 ├── analytics.py          # 5 MongoDB financial aggregation queries
-├── visualizer.py         # Matplotlib, Seaborn, and Plotly visualization charts
+├── visualizer.py         # Matplotlib and Seaborn visualization charts
 ├── report_generator.py   # Publication-quality PDF report builder (ReportLab)
-├── app.py                # Streamlit Web Application Dashboard
+├── server.py             # Standard Flask web application server
 ├── main.py               # Master CLI execution pipeline script
 ├── run_project.bat       # Windows double-clickable launcher menu
 ├── Launch_Website.bat    # Windows 1-click web launcher
 ├── HOW_TO_RUN.md         # Step-by-step instructions to open and run anytime
-├── requirements.txt      # Python dependencies for cloud deployment
+├── requirements.txt      # Python dependencies for deployment
+├── templates/            # HTML5 web templates (index.html)
 ├── charts/               # Output directory for generated chart PNGs
 ├── reports/              # Output directory for generated PDF reports
 └── data/                 # Local data cache and CSV backups
@@ -56,10 +56,11 @@ stock-market-analyzer/
    python main.py
    ```
 
-2. **Launch Interactive Dashboard**:
+2. **Launch HTML5 Web Application**:
    ```bash
-   python -m streamlit run app.py
+   python server.py
    ```
+   Open your browser to: `http://localhost:5000`
 
 3. **Or Double-Click `Launch_Website.bat`** on Windows!
 
