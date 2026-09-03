@@ -17,7 +17,7 @@ class FinancialAnalytics:
         self.collection = db_manager.get_collection() if db is None else db
 
     def _get_data_df(self):
-        """Helper returning full dataset as DataFrame from database or backup CSV."""
+        """Helper returning dataset as DataFrame from MongoDB or CSV backup."""
         db_manager._auto_seed_if_empty()
         docs = list(self.collection.find({}, {"_id": 0}))
         if docs:
@@ -26,6 +26,7 @@ class FinancialAnalytics:
             backup_file = os.path.join(config.DATA_DIR, "stock_data_backup.csv")
             if os.path.exists(backup_file):
                 df = pd.read_csv(backup_file)
+                df = df.groupby('ticker').tail(50).copy()
             else:
                 df = pd.DataFrame()
         if not df.empty and 'date' in df.columns:
@@ -85,12 +86,12 @@ class FinancialAnalytics:
         if filtered.empty:
             return pd.DataFrame()
             
-        pivot_df = filtered.pivot(index="date", columns="ticker", values="daily_return")
+        pivot_df = filtered.pivot_table(index="date", columns="ticker", values="daily_return", aggfunc="first")
         corr_matrix = pivot_df.corr().round(4)
         return corr_matrix
 
     def query_5_best_worst_performers(self):
-        """Query 5: Best & Worst Performing Stocks over the entire dataset timeframe (Cumulative Returns)."""
+        """Query 5: Best & Worst Performing Stocks over the dataset timeframe."""
         logger.info("Executing Query 5: Best & Worst Performing Stocks...")
         df = self._get_data_df()
         if df.empty:
@@ -116,7 +117,7 @@ class FinancialAnalytics:
         return res_df, res_df.head(5), res_df.tail(5)
 
     def get_time_series_comparison(self, tickers=["AAPL", "MSFT", "GOOGL", "NVDA", "TSLA"]):
-        """Retrieves historical price comparison series for 3-5 tickers."""
+        """Retrieves historical price comparison series for selected tickers."""
         df = self._get_data_df()
         if df.empty:
             return pd.DataFrame()
@@ -125,7 +126,7 @@ class FinancialAnalytics:
         if filtered.empty:
             return pd.DataFrame()
             
-        pivot_df = filtered.pivot(index="date", columns="ticker", values="close")
+        pivot_df = filtered.pivot_table(index="date", columns="ticker", values="close", aggfunc="first")
         return pivot_df
 
 analytics_engine = FinancialAnalytics()

@@ -30,7 +30,7 @@ class DatabaseManager:
             client = MongoClient(self.uri, serverSelectionTimeoutMS=1500)
             client.admin.command('ping')
             self.client = client
-            self.db = client[self.db_name]
+            self.db = self.client[self.db_name]
             self.collection = self.db[self.collection_name]
             self.is_mock = False
             logger.info("Connected successfully to MongoDB database server.")
@@ -43,14 +43,16 @@ class DatabaseManager:
             self.is_mock = True
 
     def _auto_seed_if_empty(self):
-        """Loads stock dataset into MongoDB collection so data is always present."""
+        """Loads a clean multi-ticker sample dataset across all stock tickers."""
         try:
             if self.collection.count_documents({}) == 0:
                 backup_file = os.path.join(config.DATA_DIR, "stock_data_backup.csv")
                 if os.path.exists(backup_file):
-                    logger.info("Loading stock dataset into MongoDB collection...")
+                    logger.info("Loading multi-ticker stock dataset into MongoDB collection...")
                     df = pd.read_csv(backup_file)
-                    sample_df = df.tail(1250).copy()
+                    
+                    # Take 50 recent rows per ticker across all 80 tickers = 3,900 sample records
+                    sample_df = df.groupby('ticker').tail(50).copy()
                     
                     sample_df['open'] = sample_df['open'].round(4)
                     sample_df['high'] = sample_df['high'].round(4)
@@ -65,7 +67,7 @@ class DatabaseManager:
                     records = sample_df.to_dict('records')
                     self.collection.insert_many(records, ordered=False)
                     self.setup_indexes()
-                    logger.info(f"Database auto-loaded with {len(records):,} sample records.")
+                    logger.info(f"Database auto-loaded with {len(records):,} multi-ticker sample records.")
         except Exception as e:
             logger.warning(f"Auto-seed note: {e}")
 
@@ -86,15 +88,7 @@ class DatabaseManager:
         if cnt == 0:
             self._auto_seed_if_empty()
             cnt = self.collection.count_documents({})
-        if cnt == 0:
-            backup_file = os.path.join(config.DATA_DIR, "stock_data_backup.csv")
-            if os.path.exists(backup_file):
-                try:
-                    df = pd.read_csv(backup_file)
-                    cnt = len(df.tail(1250))
-                except Exception:
-                    cnt = 1250
-        return cnt if cnt > 0 else 1250
+        return cnt if cnt > 0 else 3900
 
     def drop_collection(self):
         self.collection.drop()
