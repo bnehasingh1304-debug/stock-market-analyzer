@@ -4,9 +4,16 @@ A high-performance MongoDB system for storing, processing, and analyzing high-fr
 
 ---
 
+## 🌐 Live Web Deployment
+
+- **Live App URL**: [Deploy on Streamlit Community Cloud](https://share.streamlit.io/) *(Or insert your live app link here once deployed)*
+- **GitHub Repository**: [https://github.com/bnehasingh1304-debug/stock-market-analyzer](https://github.com/bnehasingh1304-debug/stock-market-analyzer)
+
+---
+
 ## 🌟 Key Features
 
-- **Scalable MongoDB Database**: Stores **100,000+ records** across 80+ stock tickers over 5-8 years of trading history.
+- **Scalable MongoDB Database**: Stores **100,000+ records** across 80+ stock tickers over 8 years of trading history.
 - **High-Performance Compound Indexing**: Optimized compound indexes on `(ticker, date)` for sub-millisecond aggregations.
 - **5 Core Financial Queries**:
   1. **30-Day Moving Average (SMA & EMA)**: Computes price trends and smoothing overlays.
@@ -32,7 +39,9 @@ stock-market-analyzer/
 ├── app.py                # Streamlit Web Application Dashboard
 ├── main.py               # Master CLI execution pipeline script
 ├── run_project.bat       # Windows double-clickable launcher menu
+├── Launch_Website.bat    # Windows 1-click web launcher
 ├── HOW_TO_RUN.md         # Step-by-step instructions to open and run anytime
+├── requirements.txt      # Python dependencies for cloud deployment
 ├── charts/               # Output directory for generated chart PNGs
 ├── reports/              # Output directory for generated PDF reports
 └── data/                 # Local data cache and CSV backups
@@ -52,7 +61,7 @@ stock-market-analyzer/
    python -m streamlit run app.py
    ```
 
-3. **Or Double-Click `run_project.bat`** on Windows!
+3. **Or Double-Click `Launch_Website.bat`** on Windows!
 
 ---
 
