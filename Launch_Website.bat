@@ -1,5 +1,5 @@
 @echo off
-title Stock Market Analyzer Web Launcher
+title Stock Market Analyzer Web App
 cls
 echo ======================================================================
 echo          LAUNCHING STOCK MARKET TICK DATA ANALYZER WEB APP
@@ -8,11 +8,11 @@ echo.
 
 cd /d "C:\Users\bneha\Documents\stock-market-analyzer"
 
-echo [1/2] Opening Web Browser to http://localhost:5000 ...
-start http://localhost:5000
+echo [1/2] Opening Web Browser to http://localhost:8501 ...
+start http://localhost:8501
 
-echo [2/2] Starting Flask & HTML5 Web Server...
+echo [2/2] Starting Analytics Dashboard...
 echo.
-python server.py
+python -m streamlit run app.py --server.headless true --server.port 8501
 
 pause

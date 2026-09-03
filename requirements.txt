@@ -1,4 +1,5 @@
-flask>=3.0.0
+streamlit>=1.30.0
+plotly>=5.18.0
 yfinance>=0.2.35
 pymongo>=4.6.0
 mongomock>=4.1.0
@@ -7,3 +8,4 @@ numpy>=1.24.0
 matplotlib>=3.7.0
 seaborn>=0.12.0
 reportlab>=4.0.0
+flask>=3.0.0
