@@ -1,12 +1,12 @@
-# Stock Market Tick Data Analyzer
+# 📈 Stock Market Tick Data Analyzer
 
-A high-performance MongoDB system for storing, processing, and analyzing high-frequency stock price data (OHLCV) across multiple companies. Market data is fetched dynamically via `yfinance`, indexed and structured in MongoDB, and processed using MongoDB Aggregation Pipelines to compute key quantitative financial indicators.
+> **Enterprise MongoDB Time-Series & High-Frequency Stock Data Analytics System**
 
 ---
 
-## 🌐 Live Web Deployment
+## 🌐 Live Web Deployment & Repository Links
 
-- **Live App URL**: [Deploy on Streamlit Community Cloud](https://share.streamlit.io/) *(Or insert your live app link here once deployed)*
+- **Live Web Application**: [https://stock-market-analyzer-bneha.streamlit.app/](https://stock-market-analyzer-bneha.streamlit.app/)
 - **GitHub Repository**: [https://github.com/bnehasingh1304-debug/stock-market-analyzer](https://github.com/bnehasingh1304-debug/stock-market-analyzer)
 
 ---
